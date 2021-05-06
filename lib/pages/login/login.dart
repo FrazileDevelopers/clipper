@@ -26,6 +26,8 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Stack(
               children: [
@@ -33,7 +35,7 @@ class _LoginState extends State<Login> {
                   clipper: DrawClip2(),
                   child: Container(
                     width: size.width,
-                    height: size.height * 0.8,
+                    height: size.height * .785,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -50,7 +52,7 @@ class _LoginState extends State<Login> {
                   clipper: DrawClip(),
                   child: Container(
                     width: size.width,
-                    height: size.height * 0.8,
+                    height: size.height * .785,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -122,10 +124,12 @@ class _LoginState extends State<Login> {
                 )
               ],
             ),
-            Text(
-              "Or connect with",
-              style: GoogleFonts.ubuntu(
-                color: Colors.grey,
+            Center(
+              child: Text(
+                "Or connect with",
+                style: GoogleFonts.ubuntu(
+                  color: Colors.grey,
+                ),
               ),
             ),
             Padding(
@@ -135,6 +139,7 @@ class _LoginState extends State<Login> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     decoration: BoxDecoration(
