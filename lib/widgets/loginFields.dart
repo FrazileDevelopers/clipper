@@ -1,3 +1,4 @@
+import 'package:clipper/constants/constants.dart';
 import 'package:clipper/validations/fzvalidations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,6 +43,9 @@ Widget input(String hint, bool pass) {
             borderSide: BorderSide.none,
           ),
         ),
+        onSaved: (val) => pass
+            ? Constants.loginpassword = val.trim()
+            : Constants.loginemail = val.trim(),
         validator: (value) => pass
             ? FzValidation.passwordValidator(value)
             : FzValidation.emailValidator(value),

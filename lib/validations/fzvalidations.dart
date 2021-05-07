@@ -20,12 +20,21 @@ class FzValidation {
 
   /// Password Validation
   static String passwordValidator(String password) {
-    var error;
-    if (password.isEmpty)
-      error = 'Password can\'t be empty';
-    else if (Fzregex.hasMatch(password, FzPattern.passwordHard))
-      error =
-          'Password must contain at least: 1 uppercase letter, 1 lowecase letter, 1 number & 1 special character';
+    var error =
+        'Password must contain at least: 1 uppercase letter, 1 lowecase letter, 1 number & 1 special character';
+    if (password.isEmpty) error = 'Password can\'t be empty';
+
+    if (Fzregex.hasMatch(password, FzPattern.passwordHard)) error = null;
+
+    return error;
+  }
+
+  /// Name Validation
+  static String nameValidator(String name) {
+    var error = 'Name can\'t contain numbers or whitespaces';
+    if (name.isEmpty) error = 'Name can\'t be empty';
+
+    if (Fzregex.hasMatch(name, FzPattern.alphabetOnly)) error = null;
 
     return error;
   }
