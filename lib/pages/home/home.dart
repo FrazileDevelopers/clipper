@@ -1,4 +1,6 @@
+import 'package:clipper/animations/name.dart';
 import 'package:clipper/constants/constants.dart';
+import 'package:clipper/constants/gradients.dart';
 import 'package:clipper/provider/checkinternet.dart';
 import 'package:clipper/validations/fzvalidations.dart';
 import 'package:clipper/widgets/clip1.dart';
@@ -13,7 +15,8 @@ class Homepage extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool validateAndSave() {
@@ -25,15 +28,39 @@ class _HomepageState extends State<Homepage> {
     return false;
   }
 
+  Animation<double> animation;
+  AnimationController _animationController;
+
   @override
   void initState() {
     super.initState();
     Provider.of<InternetStatus>(context, listen: false).updateInternetStatus();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: 1200,
+      ),
+    );
+    animation = Tween<double>(begin: 180.0, end: 15.0).animate(
+      CurvedAnimation(
+        curve: Curves.bounceInOut,
+        parent: _animationController,
+      ),
+    );
+    _animationController.forward();
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _animationController.dispose();
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    if (_animationController.status != AnimationStatus.completed) {
+      _animationController.dispose();
+    }
   }
 
   @override
@@ -52,7 +79,7 @@ class _HomepageState extends State<Homepage> {
                   clipper: DrawClip2(),
                   child: Container(
                     width: size.width,
-                    height: size.height * .5,
+                    height: size.height * .55,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -69,7 +96,7 @@ class _HomepageState extends State<Homepage> {
                   clipper: DrawClip(),
                   child: Container(
                     width: size.width,
-                    height: size.height * .5,
+                    height: size.height * .55,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -85,7 +112,7 @@ class _HomepageState extends State<Homepage> {
                 Form(
                   key: _formKey,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 50),
+                    padding: EdgeInsets.only(top: size.height * .1),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,6 +189,37 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ),
               ],
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 5.0,
+                  right: 10.0,
+                  bottom: 5.0,
+                  left: 10.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(
+                    5,
+                    (i) => FittedBox(
+                      child: NameItem(
+                        image:
+                            'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                        // 'https://images.unsplash.com/photo-1616446667406-0c77724b1a0b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1250&q=80',
+                        age: '24',
+                        count: '200',
+                        gradient: FzGradients.redSexyGradient,
+                        title: 'Parth',
+                        color: FzGradients.redSexyGradient.colors[0],
+                        animation: animation,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
