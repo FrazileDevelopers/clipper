@@ -58,27 +58,24 @@ class NameItem extends AnimatedWidget {
               bottom: 0.0,
               left: animation.value,
               top: 0.0,
-              child: Hero(
-                tag: title,
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.cover),
-                    ),
+              child: CachedNetworkImage(
+                imageUrl: image,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
                   ),
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1.0,
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
+                placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1.0,
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
             Positioned(
