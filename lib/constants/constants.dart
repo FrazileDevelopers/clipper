@@ -1,5 +1,5 @@
 class Constants {
-  static const String initial = home;
+  static const String initial = login;
   static const String login = '/';
   static const String home = '/home';
 
