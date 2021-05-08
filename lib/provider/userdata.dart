@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:clipper/constants/connectionStatus.dart';
 import 'package:clipper/constants/constants.dart';
+import 'package:clipper/constants/images.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'hivedb/usermodel.dart';
 import 'models/userdatamodel.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math';
 
 class UserData with ChangeNotifier {
   UserData();
@@ -16,6 +18,7 @@ class UserData with ChangeNotifier {
   Box<Person> usersBox;
 
   UserDataModel userData = UserDataModel();
+  Random rnd = Random();
 
   bool get isFetching =>
       _isFetching; // It is checking whether data is fetched from the server or not yet.
@@ -62,6 +65,9 @@ class UserData with ChangeNotifier {
         name: userData.name.toString(),
         age: userData.age.toString(),
         count: userData.count.toString(),
+        profilepic: images[rnd.nextInt(
+          images.length,
+        )],
       );
       await usersBox.put(Constants.getname, person);
       notifyListeners();

@@ -8,6 +8,7 @@ class Person {
     @required this.name,
     @required this.age,
     @required this.count,
+    @required this.profilepic,
   });
 
   @HiveField(0)
@@ -18,6 +19,9 @@ class Person {
 
   @HiveField(2)
   String count;
+
+  @HiveField(3)
+  String profilepic;
 
   // @override
   // Widget user() {
