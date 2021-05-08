@@ -1,6 +1,5 @@
 import 'package:clipper/constants/constants.dart';
 import 'package:clipper/provider/checkinternet.dart';
-import 'package:clipper/provider/data.dart';
 import 'package:clipper/widgets/clip1.dart';
 import 'package:clipper/widgets/clip2.dart';
 import 'package:clipper/widgets/loginFields.dart';

@@ -7,4 +7,7 @@ class Constants {
   static String loginemail;
   static String loginpassword;
   static String getname;
+
+  /// Hive Settings
+  static String hiveBox = "users";
 }

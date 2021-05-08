@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:clipper/constants/connectionStatus.dart';
 import 'package:clipper/constants/constants.dart';
-import 'package:clipper/provider/data.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'hivedb/usermodel.dart';
 import 'models/userdatamodel.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,9 +13,9 @@ class UserData with ChangeNotifier {
   bool _isFetching = false;
   bool _isLoading = false;
   bool _getuserDetails = false;
+  Box<Person> usersBox;
 
   UserDataModel userData = UserDataModel();
-  UserDataPref userDataPref = UserDataPref();
 
   bool get isFetching =>
       _isFetching; // It is checking whether data is fetched from the server or not yet.
@@ -25,6 +26,11 @@ class UserData with ChangeNotifier {
   bool get getuserDetails => _getuserDetails;
 
   ConnectionStatus _connection = ConnectionStatus.getInstance();
+
+  initializeDB() {
+    usersBox = Hive.box<Person>(Constants.hiveBox);
+    notifyListeners();
+  }
 
   Future<UserDataModel> userdata() async {
     String jsonResponse = '';
@@ -52,12 +58,16 @@ class UserData with ChangeNotifier {
     if (jsonResponse.isNotEmpty) {
       Map<String, dynamic> json = jsonDecode(jsonResponse);
       userData = UserDataModel.fromJson(json);
-      // String users = await userDataPref.getUserData();
-      // users = userData.toJson().toString();
-      // userDataPref.setUserData(users);
-
-      // print(userDataPref.getUserData().toString());
-      // userData = UserDataModel.fromJson(userDataPref.getUserData());
+      var person = Person(
+        name: userData.name.toString(),
+        age: userData.age.toString(),
+        count: userData.count.toString(),
+      );
+      await usersBox.put(Constants.getname, person);
+      notifyListeners();
+      // usersBox.put('name', userData.name.toString());
+      // usersBox.put('age', userData.age.toString());
+      // usersBox.put('count', userData.count.toString());
     }
     return userData;
   }

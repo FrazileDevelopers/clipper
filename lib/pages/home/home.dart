@@ -2,7 +2,6 @@ import 'package:clipper/animations/name.dart';
 import 'package:clipper/constants/constants.dart';
 import 'package:clipper/constants/gradients.dart';
 import 'package:clipper/provider/checkinternet.dart';
-import 'package:clipper/provider/data.dart';
 import 'package:clipper/provider/userdata.dart';
 import 'package:clipper/validations/fzvalidations.dart';
 import 'package:clipper/widgets/clip1.dart';
@@ -10,6 +9,7 @@ import 'package:clipper/widgets/clip2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
@@ -55,6 +55,7 @@ class _HomepageState extends State<Homepage>
         _animationController.dispose();
       }
     });
+    Provider.of<UserData>(context, listen: false).initializeDB();
   }
 
   @override
@@ -69,7 +70,6 @@ class _HomepageState extends State<Homepage>
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final userData = Provider.of<UserData>(context);
-    UserDataPref userDataPref = UserDataPref();
     return Scaffold(
       key: _scaffoldKey,
       body: SingleChildScrollView(
@@ -195,7 +195,7 @@ class _HomepageState extends State<Homepage>
                 ),
               ],
             ),
-            userData.getuserDetails
+            userData.usersBox.keys != null
                 ? Center(
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -209,28 +209,17 @@ class _HomepageState extends State<Homepage>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: List.generate(
-                          1,
+                          userData.usersBox.keys.length,
                           (i) => FittedBox(
                             child: NameItem(
                               image:
                                   'https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1336&q=80',
                               // 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
                               // 'https://images.unsplash.com/photo-1616446667406-0c77724b1a0b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1250&q=80',
-                              age: userData.getResponseJson().age.toString() ==
-                                      null
-                                  ? ''
-                                  : userData.getResponseJson().age.toString(),
-                              count: userData
-                                          .getResponseJson()
-                                          .count
-                                          .toString() ==
-                                      null
-                                  ? ''
-                                  : userData.getResponseJson().count.toString(),
+                              age: userData.usersBox.getAt(i).age,
+                              count: userData.usersBox.getAt(i).count,
                               gradient: FzGradients.redSexyGradient,
-                              title: userData.getResponseJson().name == null
-                                  ? ''
-                                  : userData.getResponseJson().name,
+                              title: userData.usersBox.getAt(i).name,
                               color: FzGradients.redSexyGradient.colors[0],
                               animation: animation,
                             ),
